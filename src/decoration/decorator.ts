@@ -1,13 +1,16 @@
 import * as vscode from 'vscode';
 import { join, sep, posix } from 'path';
 import { Ranking, RankingLine, RankingGroup } from './ranker';
-import { Command } from '../cli/command';
-import { Folder } from '../workspace/folder';
 import { TreeFolder } from '../workspace/treeFolder';
-import * as fse from 'fs-extra';
-import path = require('path');
+
+const lowString: String = 'low';
+const mediumString: String = 'medium';
+const highString: String = 'high';
+const veryHighString: String = 'veryHigh';
+
 
 export class Decorator {
+
   public static readonly faultyClasses: TreeFolder[] = [];
   private decorators: Map<String, vscode.TextEditorDecorationType> = new Map<
     String,
@@ -18,13 +21,6 @@ export class Decorator {
   private readonly rankings: Ranking;
   private readonly extensionPath: string;
   private readonly listener: vscode.Disposable;
-  private readonly listener1: vscode.Disposable;
-  private readonly sep: string = '.';
-
-  private readonly range: vscode.Range = new vscode.Range(
-    new vscode.Position(0, 0),
-    new vscode.Position(0, 0),
-  );
 
   private constructor(rankings: Ranking, extensionPath: string) {
     this.rankings = rankings;
@@ -36,7 +32,7 @@ export class Decorator {
       }
     });
 
-    this.listener1 = vscode.workspace.onWillSaveTextDocument((document) => {
+    this.listener = vscode.workspace.onWillSaveTextDocument((document) => {
       if (document) {
         this.deleteDecorations(document.document);
       }
@@ -51,8 +47,6 @@ export class Decorator {
       gutterIconPath: path,
       gutterIconSize: '100%',
       textDecoration: `underline dotted ${sus}`,
-      //outline: '1 px dotted',
-      //outlineColor: { id: `flacoco.${sus}`}
     });
   }
 
@@ -64,14 +58,11 @@ export class Decorator {
     }
 
     const keys = Object.keys(this.rankings).filter((key) => {
-      const splitKey = key.split(this.sep);
-
       const posixPath = document.fileName.split(sep).join(posix.sep);
 
       const keyToPath = key.replace(/\./g, '/') + '.java';
 
       return posixPath.includes(keyToPath);
-      // document.getText().includes(`class ${splitKey[splitKey.length - 1]}`);
     });
 
     let lowDecor = this.createDecoration(
@@ -91,17 +82,17 @@ export class Decorator {
       'red',
     );
 
-    this.decorators.set(document.fileName + 'low', lowDecor);
-    this.decorators.set(document.fileName + 'medium', mediumDecor);
-    this.decorators.set(document.fileName + 'high', highDecor);
-    this.decorators.set(document.fileName + 'veryHigh', veryHighDecor);
+    this.decorators.set(document.fileName + lowString, lowDecor);
+    this.decorators.set(document.fileName + mediumString, mediumDecor);
+    this.decorators.set(document.fileName + highString, highDecor);
+    this.decorators.set(document.fileName + veryHighString, veryHighDecor);
 
     const low = [],
       medium = [],
       high = [],
       veryHigh = [];
-    for (let idx = 0; idx < keys.length; idx++) {
-      const group = this.rankings[keys[idx]];
+    for (let i = 0; i < keys.length; i++) {
+      const group = this.rankings[keys[i]];
       low.push(...group.low);
       medium.push(...group.medium);
       high.push(...group.high);
@@ -123,10 +114,10 @@ export class Decorator {
     this.savedDocs.push(document.fileName);
     for (let [key, value] of this.decorators) {
       if (
-        key === `${document.fileName}low` ||
-        key === `${document.fileName}medium` ||
-        key === `${document.fileName}high` ||
-        key === `${document.fileName}veryHigh`
+        key === `${document.fileName}${lowString}` ||
+        key === `${document.fileName}${mediumString}` ||
+        key === `${document.fileName}${highString}` ||
+        key === `${document.fileName}${veryHighString}`
       ) {
         value.dispose();
       }
@@ -155,8 +146,9 @@ export class Decorator {
           _currIdx: number,
           _arr: RankingLine[],
         ) => {
-          
-          const key = curr.getName().includes('$') ? curr.getName().split('$')[0] : curr.getName();
+          const key = curr.getName().includes('$')
+            ? curr.getName().split('$')[0]
+            : curr.getName();
           const susp = curr.getSus();
           (prev[key] = prev[key] || new RankingGroup()).lines.push(curr);
           maxProbability = susp > maxProbability ? susp : maxProbability;
@@ -183,11 +175,11 @@ export class Decorator {
 
     group.lines.forEach((line) => {
       const div = line.getSus() / maxProbability;
-      if (div < 0.4) {
+      if (div < RankingLine.lowProb) {
         group.low.push(line);
-      } else if (div < 0.6) {
+      } else if (div < RankingLine.mediumProb) {
         group.medium.push(line);
-      } else if (div < 0.85) {
+      } else if (div < RankingLine.highProb) {
         group.high.push(line);
       } else {
         group.veryHigh.push(line);

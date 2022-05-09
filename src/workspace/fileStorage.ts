@@ -1,12 +1,12 @@
 import * as fse from 'fs-extra';
 import { join } from 'path';
-import { Folder } from './folder';
+import { File } from './file';
 
-export class FolderContainer {
-  private static readonly CONFIG_FOLDER: string = '.flacoco/';
+export class FileStorage {
+  private static readonly CONFIG_FILE: string = '.flacoco/';
 
   private readonly toolsPath: string;
-  private readonly folders: { [key: string]: Folder };
+  private readonly folders: { [key: string]: File };
 
   public constructor(toolsPath: string, folders: string[]) {
     this.toolsPath = toolsPath;
@@ -14,11 +14,11 @@ export class FolderContainer {
     this.addFolders(folders);
   }
 
-  public getFolder(key: string): Folder {
+  public getFolder(key: string): File {
     return this.folders[key];
   }
 
-  public getFolders(): Folder[] {
+  public getFolders(): File[] {
     return Object.values(this.folders);
   }
 
@@ -42,17 +42,12 @@ export class FolderContainer {
   }
 
   private async createFolder(path: string): Promise<void> {
-    const configFolderPath = join(path, FolderContainer.CONFIG_FOLDER);
-    //const tool = this.getBuildTool(path);
-
-    //if (!tool) {
-      //return;
-    //}
+    const configFolderPath = join(path, FileStorage.CONFIG_FILE);
 
     if (!(await fse.pathExists(configFolderPath))) {
       await fse.copy(this.toolsPath, configFolderPath, { overwrite: false });
     }
 
-    this.folders[path] = new Folder(path, configFolderPath);
+    this.folders[path] = new File(path, configFolderPath);
   }
 }

@@ -1,7 +1,7 @@
 import { join } from 'path';
 import * as vscode from 'vscode';
 import { FlacocoCommand, FlacocoCommander } from './mainCommand';
-import { FolderContainer } from './workspace/container';
+import { FileStorage } from './workspace/fileStorage';
 
 export function activate(context: vscode.ExtensionContext) {
   if (
@@ -9,13 +9,13 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.workspace.workspaceFolders.length === 0
   ) {
     throw new Error(
-      'Unable to locate workspace, extension has been activated incorrectly.',
+      'Unable to locate workspace.',
     );
   }
 
   const toolsPath = join(context.extensionPath, 'tools');
   const folders = vscode.workspace.workspaceFolders.map((wf) => wf.uri.fsPath);
-  const container = new FolderContainer(toolsPath, folders);
+  const container = new FileStorage(toolsPath, folders);
   const commander = new FlacocoCommander(context.extensionPath, container);
 
   context.subscriptions.push(

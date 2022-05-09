@@ -2,12 +2,12 @@ import * as vscode from 'vscode';
 import * as os from 'os';
 import * as fse from 'fs-extra';
 import { join, basename } from 'path';
-import { runFunction } from './cli/cliBuilder';
+import { runFunction } from './cli/cliRunner';
 import { Command, CommandRet } from './cli/command';
 import { Decorator } from './decoration/decorator';
-import { FolderContainer } from './workspace/container';
+import { FileStorage } from './workspace/fileStorage';
 import assert = require('assert');
-import { Folder } from './workspace/folder';
+import { File } from './workspace/file';
 
 export class FlacocoCommander
   implements vscode.TreeDataProvider<FlacocoCommand>
@@ -19,11 +19,11 @@ export class FlacocoCommander
     this._onDidChangeTreeData.event;
 
   private readonly extensionPath: string;
-  private readonly container: FolderContainer;
+  private readonly container: FileStorage;
   private readonly statusBar: vscode.StatusBarItem =
     vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
 
-  constructor(extensionPath: string, container: FolderContainer) {
+  constructor(extensionPath: string, container: FileStorage) {
     this.extensionPath = extensionPath;
     this.container = container;
   }
@@ -42,10 +42,10 @@ export class FlacocoCommander
       return [
         new FlacocoCommand(
           typeof folderName !== 'undefined'
-            ? basename(folderName.folderPath)
+            ? basename(folderName.filePath)
             : 'Unsupported Folder',
           vscode.TreeItemCollapsibleState.None,
-          folderName?.folderPath,
+          folderName?.filePath,
           false,
         ),
         new FlacocoCommand(
@@ -74,7 +74,7 @@ export class FlacocoCommander
       'Checking whether Java is available on the command line.',
     );
     if (ret) {
-      console.log('-');
+      console.log('...');
       return;
     }
     console.log('Currently running on: ' + os.platform());
@@ -98,7 +98,7 @@ export class FlacocoCommander
 
       vscode.window.showInformationMessage('Files set up.');
     } else {
-      vscode.window.showErrorMessage('Error finding the workspace');
+      vscode.window.showErrorMessage('Workspace not found.');
     }
 
     await this.runTestCases(wf, ret);
@@ -127,13 +127,13 @@ export class FlacocoCommander
         return;
       }
     } else {
-      vscode.window.showErrorMessage('Error finding the workspace');
+      vscode.window.showErrorMessage('Workspace not found.');
     }
   }
 
-  private async decorateFiles(rankingPath: string, folder: Folder, wf: string) {
+  private async decorateFiles(rankingPath: string, folder: File, wf: string) {
     if (!fse.existsSync(rankingPath)) {
-      vscode.window.showErrorMessage(rankingPath + ' does not exist!');
+      vscode.window.showErrorMessage(rankingPath + ' not found!');
       return;
     }
 

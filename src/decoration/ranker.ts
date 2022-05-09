@@ -1,5 +1,3 @@
-import { join, sep } from 'path';
-
 export { Ranking, RankingGroup, RankingLine };
 
 interface Ranking {
@@ -15,6 +13,11 @@ class RankingGroup {
 }
 
 class RankingLine {
+
+  public static lowProb = 0.4;
+  public static mediumProb = 0.6;
+  public static highProb = 0.85;
+
   private readonly name: string;
   private readonly line: number;
   private readonly sus: number;
@@ -51,11 +54,11 @@ class RankingLine {
   }
 
   private convertSus(sus: number): string {
-    if (sus < 0.4) {
+    if (sus < RankingLine.lowProb) {
      return 'This line has a low suspicion level';
-    } else if (sus < 0.6) {
+    } else if (sus < RankingLine.mediumProb) {
      return 'This line has a medium suspicion level';
-    } else if (sus < 0.85) {
+    } else if (sus < RankingLine.highProb) {
       return 'This line has a high suspicion level';
     } else {
       return 'This line has a very high suspicion level';
