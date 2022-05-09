@@ -59,3 +59,6 @@ It is worth mentioning that, in order to be colorblind friendly, the extension t
 Initial release of flacocovscode.
 
 
+## License
+
+[MIT License](LICENSE)
