@@ -3,7 +3,7 @@ import { Command } from './command';
 export { runFunction };
 
 const flacocoVersion = 'flacoco-1.0.3-SNAPSHOT-jar-with-dependencies.jar';
-const format = 'CSV'
+const format = 'CSV';
 
 function runFunction(destPath: string): string {
   return new Command()
