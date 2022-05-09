@@ -1,8 +1,13 @@
 {
   "name": "flacoco",
   "displayName": "flacoco",
-  "description": "Flacoco plugin por vscode",
+  "description": "Flacoco VSCode extension",
+  "publisher": "JoaoLeao",
   "version": "0.0.1",
+  "repository": {
+		"type": "git",
+		"url": "https://github.com/JoaoLeao7/flacoco-vscode"
+	},
   "engines": {
     "vscode": "^1.66.0"
   },
