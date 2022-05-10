@@ -23,7 +23,7 @@ There are two ways to install Flacoco's Visual Studio plugin from the marketplac
 Studio Code by selecting the Extensions icon in the view container (or simply `Shift+Cmd+X` on macOS and `Ctrl+Shift+X` on Windows and Linux).
 Then, you may use the prompt to look for Flacoco and install it.
 
-Alternatively, you may download and install the extension from the
+Alternatively, you may download and install the extension from the [Marketplace](https://marketplace.visualstudio.com/items?itemName=JoaoLeao.flacoco).
 
 ## Using Flacoco Visual Studio Code Extension
 

@@ -3,7 +3,7 @@
   "displayName": "flacoco",
   "description": "Flacoco VSCode extension",
   "publisher": "JoaoLeao",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "repository": {
 		"type": "git",
 		"url": "https://github.com/JoaoLeao7/flacoco-vscode"
@@ -12,7 +12,7 @@
     "vscode": "^1.66.0"
   },
   "categories": [
-    "Other"
+    "Debuggers"
   ],
   "activationEvents": [
     "onLanguage:java",
