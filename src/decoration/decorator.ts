@@ -157,8 +157,10 @@ export class Decorator {
         {},
       );
 
+    Decorator.faultyClasses.splice(0);
+
     for (const key in ranking) {
-      await Decorator.addToFaulty(key, projectPath);
+      await Decorator.addToFaulty(key);
       Decorator.splitProbability(ranking[key], maxProbability);
     }
     return new Decorator(ranking, extensionPath);
@@ -186,7 +188,7 @@ export class Decorator {
       }
     });
   }
-  private static async addToFaulty(folder: string, projectPath: string) {
+  private static async addToFaulty(folder: string) {
     let faultyClass: TreeFolder;
     let label: string;
     let glob: string;

@@ -63,6 +63,10 @@ Initial release of flacocovscode.
 
 Updated suspiciousness score color intervals 
 
+### 1.0.2
+
+Bug fixes
+
 ## License
 
 [MIT License](LICENSE)
