@@ -59,6 +59,10 @@ It is worth mentioning that, in order to be colorblind friendly, the extension t
 Initial release of flacocovscode.
 
 
+### 1.0.1
+
+Updated suspiciousness score color intervals 
+
 ## License
 
 [MIT License](LICENSE)

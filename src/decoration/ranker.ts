@@ -14,9 +14,9 @@ class RankingGroup {
 
 class RankingLine {
 
-  public static lowProb = 0.4;
-  public static mediumProb = 0.6;
-  public static highProb = 0.85;
+  public static lowProb = 0.2;
+  public static mediumProb = 0.5;
+  public static highProb = 0.75;
 
   private readonly name: string;
   private readonly line: number;
