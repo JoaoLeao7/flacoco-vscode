@@ -177,6 +177,7 @@ export class Decorator {
 
     group.lines.forEach((line) => {
       const div = line.getSus() / maxProbability;
+      line.convertSus(div);
       if (div < RankingLine.lowProb) {
         group.low.push(line);
       } else if (div < RankingLine.mediumProb) {

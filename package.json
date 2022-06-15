@@ -3,7 +3,7 @@
   "displayName": "flacoco",
   "description": "Flacoco VSCode extension",
   "publisher": "JoaoLeao",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "repository": {
     "type": "git",
     "url": "https://github.com/JoaoLeao7/flacoco-vscode"

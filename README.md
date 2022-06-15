@@ -67,6 +67,10 @@ Updated suspiciousness score color intervals
 
 Bug fixes
 
+### 1.0.3
+
+Suspiciousness text bug fix
+
 ## License
 
 [MIT License](LICENSE)

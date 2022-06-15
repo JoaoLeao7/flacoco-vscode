@@ -21,7 +21,7 @@ class RankingLine {
   private readonly name: string;
   private readonly line: number;
   private readonly sus: number;
-  private readonly susText: string;
+  private susText: string;
 
   constructor(ranking: string) {
     const split = ranking.split(',');
@@ -35,7 +35,7 @@ class RankingLine {
     this.name = name;
     this.line = Number(line);
     this.sus = Number(sus);
-    this.susText = this.convertSus(this.sus);
+    this.susText = "";
   }
 
   public getName(): string {
@@ -53,15 +53,15 @@ class RankingLine {
     return this.susText;
   }
 
-  private convertSus(sus: number): string {
+  public convertSus(sus: number) {
     if (sus < RankingLine.lowProb) {
-     return 'This line has a low suspicion level';
+      this.susText = 'This line has a low suspicion level';
     } else if (sus < RankingLine.mediumProb) {
-     return 'This line has a medium suspicion level';
+      this.susText =  'This line has a medium suspicion level';
     } else if (sus < RankingLine.highProb) {
-      return 'This line has a high suspicion level';
+      this.susText =  'This line has a high suspicion level';
     } else {
-      return 'This line has a very high suspicion level';
+      this.susText ='This line has a very high suspicion level';
     }
 
   }
