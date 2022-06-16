@@ -41,7 +41,7 @@ Then you run the extension and a Status Bar and Information logs will show up to
 
 ![Flacoco Status Bar](https://github.com/JoaoLeao7/flacoco-vscode/blob/main/resources/images/statusbar.jpg?raw=true)
 
-When it is completed, the Faulty Classes separator will be filled with the encountered classes with the faulty lines of code.
+When it is completed, the Faulty Classes separator will be filled with the encountered classes with the faulty lines of code. It prioritizes the class with the line of most suspicion, from top to bottom.
 
 ![Flacoco Faulty Classes](https://github.com/JoaoLeao7/flacoco-vscode/blob/main/resources/images/faultyclasses.jpg?raw=true)
 
